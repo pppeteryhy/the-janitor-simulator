@@ -135,14 +135,19 @@ public class JSFPSController : MonoBehaviour
 
         m_MouseLook.UpdateCursorLock();
 
+        //搜索垃圾
         GarbageBase garbage;
-        m_pRaycaster.RaycastToSearch(100, out garbage);
+        m_pRaycaster.RaycastToSearch(5, out garbage);
         if(garbage != null)
         {
+            Action tmp;
+            tmp = garbage.OnCleaned;
+            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, garbage, tmp);
             previousGarbage = garbage;
             garbage.EnableOutlineColor();
         }else if(previousGarbage != null)
         {
+            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnBreakPickUp);
             previousGarbage.DisableOutlineColor();
         }
     }

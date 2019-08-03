@@ -19,6 +19,7 @@ public class UIManager : MonoSingleton<UIManager>
     //用于记录所有已经打开的UI界面的
     private Dictionary<UIDepthConst, Stack<UIScreen>> screenOpened;
     private Dictionary<UIDepthConst, Transform> depthTrans;
+    private Dictionary<Type, UIScreen> screenPool;
     private Transform uiRoot;
 
 
@@ -28,6 +29,7 @@ public class UIManager : MonoSingleton<UIManager>
         screenDic = new Dictionary<Type, UIScreen>();
         screenOpened = new Dictionary<UIDepthConst, Stack<UIScreen>>();
         depthTrans = new Dictionary<UIDepthConst, Transform>();
+        screenPool = new Dictionary<Type, UIScreen>();
         uiRoot = GameObject.Find("UIRoot").transform;
         UIDepth[] uiCollections = uiRoot.GetComponentsInChildren<UIDepth>();
         for (int i = 0; i < uiCollections.Length; i++)
@@ -65,37 +67,34 @@ public class UIManager : MonoSingleton<UIManager>
         Stack<UIScreen> temp = screenOpened[uIDepthConst];
         if (hidePrevious && temp.Count > 0)
         {
-            temp.Peek().gameObject.SetActive(false);
             temp.Peek().OnHide();
         }
-        UIScreen screenToPush = UnityEngine.Object.Instantiate(screenDic[screenType], depthTrans[uIDepthConst]);
+        UIScreen screenToPush;
+        if (screenPool.ContainsKey(screenType))
+        {
+            screenToPush = screenPool[screenType];
+            screenPool.Remove(screenType);
+        }
+        else
+        {
+            screenToPush = UnityEngine.Object.Instantiate(screenDic[screenType], depthTrans[uIDepthConst]);
+            screenToPush.gameObject.name = screenType.Name;
+        }
         screenToPush.OnInit(data);
-        screenToPush.OnShow();
-        screenToPush.gameObject.name = screenType.Name;
         temp.Push(screenToPush);
         screenOpened[uIDepthConst] = temp;
         return screenToPush;
     }
 
     //关闭当前打开的窗口，并打开前一个窗口
-    public UIScreen Pop(UIDepthConst uIDepthConst, bool destroy = true)
+    public UIScreen Pop(UIDepthConst uIDepthConst)
     {
         UIScreen screenToPop = screenOpened[uIDepthConst].Pop();
-        if (destroy)
-        {
-            screenToPop.OnHide();
-            screenToPop.OnClose();
-            UnityEngine.Object.Destroy(screenToPop.gameObject);
-        }
-        else
-        {
-            screenToPop.OnHide();
-            screenToPop.gameObject.SetActive(false);
-        }
 
-        if(screenOpened[uIDepthConst].Count > 0)
+        screenToPop.OnHide();
+        AddScreenToPool(screenToPop);
+        if (screenOpened[uIDepthConst].Count > 0)
         {
-            screenOpened[uIDepthConst].Peek().gameObject.SetActive(true);
             screenOpened[uIDepthConst].Peek().OnShow();
         }
         return screenToPop;
@@ -111,8 +110,14 @@ public class UIManager : MonoSingleton<UIManager>
                 Pop(screen.Key);
             }
         }
-
         Push<UIScreenMainMenu>(UIDepthConst.BottomDepth);
+    }
+
+    //将一个已经关闭的窗口加到池中
+    public void AddScreenToPool(UIScreen targetScreen)
+    {
+        screenPool.Add(targetScreen.GetType(), targetScreen);
+        print(screenPool.Count);
     }
     
 }

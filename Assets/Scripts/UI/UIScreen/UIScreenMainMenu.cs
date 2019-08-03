@@ -7,7 +7,6 @@ using DG.Tweening;
 
 public class UIScreenMainMenu : UIScreen
 {
-    public Image img_title;
     public Button btn_LevelSelection;
     public Button btn_Options;
     public Button btn_Credits;
@@ -21,28 +20,9 @@ public class UIScreenMainMenu : UIScreen
         btn_Quit.onClick.AddListener(OnQuitButtonClicked);
     }
 
-    protected override void InitData()
-    {
-
-    }
-
-    protected override void InitView()
-    {
-
-    }
-
-    public override void OnClose()
-    {
-
-    }
-
-    public override void OnHide()
-    {
-
-    }
-
     public override void OnShow()
     {
+        base.OnShow();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }

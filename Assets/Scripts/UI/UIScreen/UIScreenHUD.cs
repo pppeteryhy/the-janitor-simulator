@@ -1,24 +1,26 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System;
 
 public class UIScreenHUD : UIScreen
 {
     public Text txt_TimeLeft;
-    public Image img_AttackedNotice;
-    public Image img_CrouchCD;
-    public Image img_Locking;
+    public Image garbageNotice;
+    public Image selectSlotNotice;
+    public Image[] toolSlots;
+    public Slider pickupSlider;
 
     private float totalTime;
     private float attackedNoticeTime;
 
     protected override void InitComponent()
     {
+
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_UPDATETIMELEFT, UpdateTimeLeft);
-        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_UPDATENOTICEICON, UpdateAttackNotice);
-        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_UPDATECDICON, UpdateCrouchIcon);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnBreakPickUp, OnPlayerBreakPickup);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnStartPickUp, CallPickProcess);
     }
 
     protected override void InitData()
@@ -35,19 +37,8 @@ public class UIScreenHUD : UIScreen
     public override void OnClose()
     {
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_UPDATETIMELEFT, UpdateTimeLeft);
-        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_UPDATENOTICEICON, UpdateAttackNotice);
-        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_UPDATECDICON, UpdateCrouchIcon);
     }
 
-    public override void OnHide()
-    {
-
-    }
-
-    public override void OnShow()
-    {
-
-    }
 
     private void UpdateTimeLeft(object[] data)
     {
@@ -57,15 +48,40 @@ public class UIScreenHUD : UIScreen
         txt_TimeLeft.color = Color.Lerp(Color.red, Color.green, timeLeft / totalTime);
     }
 
-    private void UpdateAttackNotice(params object[] data)
+    //通用的进度条
+    public void CallPickProcess(object[] data)
     {
-        float timing = (float)data[0];
-        float total = (float)data[1];
-        img_AttackedNotice.fillAmount = timing / total;
+        float duration = (float)data[0];
+        Action callBack = (Action)data[1];
+        StartCoroutine(PickProcess(duration, callBack));
     }
 
-    private void UpdateCrouchIcon(object[] data)
+    private bool isPicking;
+    private IEnumerator PickProcess(float duration, Action callBack)
     {
-        float tPast = (float) data[0];
+        float t = 0;
+        //初始化进度条
+        UIUtilities.DoFadeUI(pickupSlider.gameObject, 1, 0f, Ease.InOutBack);
+        pickupSlider.value = 0;
+        isPicking = true;
+        while (t > duration)
+        {
+            yield return null;
+            t += Time.deltaTime;
+            pickupSlider.value = t / duration;
+            if (!isPicking)
+            {
+                UIUtilities.DoFadeUI(pickupSlider.gameObject, 0, 0.2f, Ease.InOutBack);
+                yield break;
+            }
+        }
+
+        if (callBack != null)
+            callBack.Invoke();
+    }
+
+    private void OnPlayerBreakPickup(object[] data)
+    {
+        isPicking = false;
     }
 }

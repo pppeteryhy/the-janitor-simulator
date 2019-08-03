@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 
-public class UIUtilities : MonoBehaviour {
+public class UIUtilities {
 
     //UI的淡入淡出效果
     public static void DoFadeUI(GameObject uiObj, float endValue, float duration, Ease ease)

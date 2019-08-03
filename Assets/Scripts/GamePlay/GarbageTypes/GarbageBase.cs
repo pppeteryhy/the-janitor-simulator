@@ -31,12 +31,7 @@ public class GarbageBase : MonoBehaviour {
         DisableOutlineColor();
     }
 
-    public void BeginClean()
-    {
-        Invoke("CleanFinished", cleaningTimeNeeded);
-    }
-
-    private void CleanFinished()
+    public void OnCleaned()
     {
         if(needPackage)
             PackageManager.Instance.CurrentCapcity += pacCapcityCost;

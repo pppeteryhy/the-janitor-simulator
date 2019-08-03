@@ -20,31 +20,26 @@ public class UIScreenOptions : UIScreen
         btn_Back.onClick.AddListener(OnBtnBackChanged);
     }
 
-    protected override void InitData()
+    public override void OnShow()
     {
-
-    }
-
-    protected override void InitView()
-    {
-
-    }
-
-    public override void OnClose()
-    {
-
+        base.OnShow();
+        rightPanel.DOAnchorPos(new Vector2(0, 0), 0.5f);
     }
 
     public override void OnHide()
     {
-
+        interactableMask.raycastTarget = true;
+        rightPanel.DOAnchorPos(new Vector2(1000, 0), 0.5f).onComplete = OnClose;
     }
 
-    public override void OnShow()
+    public override void OnClose()
     {
-        rightPanel.DOAnchorPos(new Vector2(0, 0), 0.5f);
+        slider_musicVolume.onValueChanged.RemoveAllListeners();
+        slider_soundVolume.onValueChanged.RemoveAllListeners();
+        toggle_MusicOn.onValueChanged.RemoveAllListeners();
+        btn_Back.onClick.RemoveAllListeners();
+        base.OnClose();
     }
-
 
     private void OnSliderMusicColumeChanged(float value)
     {
