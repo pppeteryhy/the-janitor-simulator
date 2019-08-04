@@ -17,34 +17,21 @@ public class UIScreenCredits : UIScreen
         btnBack.onClick.AddListener(OnBackButtonClicked);
     }
 
-    protected override void InitData()
+    public override void OnShow()
     {
-
-    }
-
-    protected override void InitView()
-    {
-
-    }
-
-    public override void OnClose()
-    {
-
+        base.OnShow();
+        rightPanel.DOAnchorPos(new Vector2(0, 0), 0.5f);
     }
 
     public override void OnHide()
     {
-
-    }
-
-    public override void OnShow()
-    {
-        rightPanel.DOAnchorPos(new Vector2(0, 0), 0.5f);
+        interactableMask.raycastTarget = true;
+        rightPanel.DOAnchorPos(new Vector2(1000, 0), 0.5f).onComplete = OnClose;
     }
 
     private void OnMoreButtonClicked()
     {
-        Application.OpenURL("http://onlywaytosurvive.strikingly.com");
+        Application.OpenURL("http://pppeteryao.strikingly.com");
     }
 
     private void OnBackButtonClicked()
