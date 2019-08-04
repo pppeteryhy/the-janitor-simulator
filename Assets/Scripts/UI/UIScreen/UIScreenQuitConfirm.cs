@@ -17,32 +17,13 @@ public class UIScreenQuitConfirm : UIScreen {
         btn_BG.onClick.AddListener(OnCancelBtnClicked);
     }
 
-    protected override void InitData()
-    {
-
-    }
-
-    protected override void InitView()
-    {
-
-    }
-
-
     public override void OnClose()
     {
-
+        base.OnClose();
+        btn_Confirm.onClick.RemoveAllListeners();
+        btn_Cancel.onClick.RemoveAllListeners();
+        btn_BG.onClick.RemoveAllListeners();
     }
-
-    public override void OnHide()
-    {
-
-    }
-
-    public override void OnShow()
-    {
-
-    }
-
 
     private void OnConfirmBtnClicked()
     {
