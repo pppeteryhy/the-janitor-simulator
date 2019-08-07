@@ -14,6 +14,11 @@ public class UIUtilities {
         {
             imgs[i].DOFade(endValue, duration).SetEase(ease);
         }
+        Text[] txts = uiObj.GetComponentsInChildren<Text>();
+        for (int i = 0; i < txts.Length; i++)
+        {
+            txts[i].DOFade(endValue, duration).SetEase(ease);
+        }
     }
 
 }

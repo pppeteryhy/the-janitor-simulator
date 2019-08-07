@@ -140,15 +140,25 @@ public class JSFPSController : MonoBehaviour
         m_pRaycaster.RaycastToSearch(5, out garbage);
         if(garbage != null)
         {
-            Action tmp;
-            tmp = garbage.OnCleaned;
-            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, garbage, tmp);
+            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnLockGarbage, garbage.transform.position);
             previousGarbage = garbage;
             garbage.EnableOutlineColor();
         }else if(previousGarbage != null)
         {
             EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnBreakPickUp);
             previousGarbage.DisableOutlineColor();
+        }
+
+        //捡垃圾
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if(garbage != null)
+            {
+                Action tmp;
+                tmp = garbage.OnCleaned;
+                EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, garbage.cleaningTimeNeeded, tmp);
+            }
+
         }
     }
 

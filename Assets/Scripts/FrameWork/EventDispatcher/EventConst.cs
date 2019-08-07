@@ -18,4 +18,6 @@ public class EventConst
     public const string EVENT_OnStartPickUp = "StartPickUp";
     //< 当玩家打断捡垃圾进程时
     public const string EVENT_OnBreakPickUp = "BreakPickUp";
+    //<玩家检索到垃圾时
+    public const string EVENT_OnLockGarbage = "LockGarbagePos";
 }

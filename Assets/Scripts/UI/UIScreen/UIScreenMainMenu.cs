@@ -35,7 +35,8 @@ public class UIScreenMainMenu : UIScreen
         SceneManager.LoadSceneAsync("Level1").completed += delegate
         {
             UIManager.Instance.Pop(UIDepthConst.TopDepth);
-            //UIManager.Instance.Push<UIScreenHUD>(UIDepthConst.MiddleDepth, true);
+            UIManager.Instance.Push<UIScreenHUD>(UIDepthConst.MiddleDepth, true, 120f);
+            JSGameManager.Instance.LevelStart();
         };
     }
 

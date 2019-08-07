@@ -9,18 +9,21 @@ public class UIScreenHUD : UIScreen
     public Text txt_TimeLeft;
     public Image garbageNotice;
     public Image selectSlotNotice;
-    public Image[] toolSlots;
+    public GameObject[] toolSlots;
     public Slider pickupSlider;
 
     private float totalTime;
     private float attackedNoticeTime;
+    private Camera mainCam;
 
     protected override void InitComponent()
     {
-
+        mainCam = Camera.main;
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_UPDATETIMELEFT, UpdateTimeLeft);
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnBreakPickUp, OnPlayerBreakPickup);
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnStartPickUp, CallPickProcess);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnLockGarbage, UpdateLockingGarbage);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnLockGarbage, CancelLockTarget);
     }
 
     protected override void InitData()
@@ -31,12 +34,16 @@ public class UIScreenHUD : UIScreen
 
     protected override void InitView()
     {
-
+        UIUtilities.DoFadeUI(pickupSlider.gameObject, 0, 0f, Ease.InOutBack);
     }
     
     public override void OnClose()
     {
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_UPDATETIMELEFT, UpdateTimeLeft);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnBreakPickUp, OnPlayerBreakPickup);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnStartPickUp, CallPickProcess);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnLockGarbage, UpdateLockingGarbage);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnLockGarbage, CancelLockTarget);
     }
 
 
@@ -53,6 +60,7 @@ public class UIScreenHUD : UIScreen
     {
         float duration = (float)data[0];
         Action callBack = (Action)data[1];
+        print(duration);
         StartCoroutine(PickProcess(duration, callBack));
     }
 
@@ -64,7 +72,7 @@ public class UIScreenHUD : UIScreen
         UIUtilities.DoFadeUI(pickupSlider.gameObject, 1, 0f, Ease.InOutBack);
         pickupSlider.value = 0;
         isPicking = true;
-        while (t > duration)
+        while (t < duration)
         {
             yield return null;
             t += Time.deltaTime;
@@ -78,10 +86,23 @@ public class UIScreenHUD : UIScreen
 
         if (callBack != null)
             callBack.Invoke();
+        UIUtilities.DoFadeUI(pickupSlider.gameObject, 0, 0.2f, Ease.InOutBack);
     }
-
     private void OnPlayerBreakPickup(object[] data)
     {
         isPicking = false;
+    }
+
+    private void UpdateLockingGarbage(object[] data)
+    {
+        Vector3 gabagePos = (Vector3)data[0];
+        garbageNotice.gameObject.SetActive(true);
+        Vector2 world2ScreenPos = mainCam.WorldToScreenPoint(gabagePos);
+        (garbageNotice.transform as RectTransform).anchoredPosition = world2ScreenPos;
+    }
+
+    private void CancelLockTarget(object[] data)
+    {
+        garbageNotice.gameObject.SetActive(false);
     }
 }
