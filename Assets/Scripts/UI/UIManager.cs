@@ -114,10 +114,9 @@ public class UIManager : MonoSingleton<UIManager>
     }
 
     //将一个已经关闭的窗口加到池中
-    public void AddScreenToPool(UIScreen targetScreen)
+    private void AddScreenToPool(UIScreen targetScreen)
     {
         screenPool.Add(targetScreen.GetType(), targetScreen);
-        print(screenPool.Count);
     }
     
 }

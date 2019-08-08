@@ -23,7 +23,9 @@ public class UIScreenHUD : UIScreen
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnBreakPickUp, OnPlayerBreakPickup);
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnStartPickUp, CallPickProcess);
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnLockGarbage, UpdateLockingGarbage);
-        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnLockGarbage, CancelLockTarget);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnBreakPickUp, CancelLockTarget);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnToolSwitch, OnToolSwitch);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnToolUse, OnToolUse);
     }
 
     protected override void InitData()
@@ -43,7 +45,9 @@ public class UIScreenHUD : UIScreen
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnBreakPickUp, OnPlayerBreakPickup);
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnStartPickUp, CallPickProcess);
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnLockGarbage, UpdateLockingGarbage);
-        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnLockGarbage, CancelLockTarget);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnBreakPickUp, CancelLockTarget);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnToolSwitch, OnToolSwitch);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnToolUse, OnToolUse);
     }
 
 
@@ -104,5 +108,36 @@ public class UIScreenHUD : UIScreen
     private void CancelLockTarget(object[] data)
     {
         garbageNotice.gameObject.SetActive(false);
+    }
+
+    private void OnToolSwitch(object[] data)
+    {
+        for (int i = 0; i < toolSlots.Length; i++)
+        {
+            Image img = toolSlots[i].GetComponent<Image>();
+            if (i == InventoryManager.Instance.currentTool)
+            {
+                img.color = Color.green;
+            }
+            else
+            {
+                img.color = Color.white;
+            }
+        }
+    }
+
+    private void OnToolUse(object[] data)
+    {
+        int toolIndex = (int)data[0];
+        float currentClean = (float)data[1];
+        float maxClean = (float)data[2];
+        for (int i = 0; i < toolSlots.Length; i++)
+        {
+            Slider slider = toolSlots[i].GetComponentInChildren<Slider>();
+            if (i == toolIndex)
+            {
+                slider.value = currentClean / maxClean;
+            }
+        }
     }
 }

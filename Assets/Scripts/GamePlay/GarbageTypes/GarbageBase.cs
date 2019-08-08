@@ -5,16 +5,31 @@ using UnityEngine;
 public class GarbageBase : MonoBehaviour {
 
     public GarbageType _garbageType;
+    [HideInInspector]
     public int cleaningValueCost;
+    [HideInInspector]
     public float cleaningTimeNeeded;
+    [HideInInspector]
     public int pacCapcityCost;
+    [HideInInspector]
     public bool needPackage;
+    [HideInInspector]
+    public ToolType toolType;
 
     private List<QuickOutline> _outlines;
 
     private void Start()
     {
         Init();
+    }
+
+    private void ParseGarbageData()
+    {
+        cleaningValueCost = GarbageModel.Instance.GetCleaningValueCost((int)_garbageType);
+        cleaningTimeNeeded = GarbageModel.Instance.GetCleaningValueCost((int)_garbageType);
+        pacCapcityCost = GarbageModel.Instance.GetPacCapcityCost((int)_garbageType);
+        needPackage = GarbageModel.Instance.GetNeedPackage((int)_garbageType);
+        toolType = GarbageModel.Instance.GetToolNeed((int)_garbageType);
     }
 
     public void Init()
@@ -58,8 +73,8 @@ public class GarbageBase : MonoBehaviour {
 
 public enum GarbageType
 {
-    Paper = 0,
-    Food = 1,
-    ChewingGum = 2,
-    Stain = 3
+    Paper = 1001,
+    Food = 1002,
+    ChewingGum = 1003,
+    Stain = 1004
 }

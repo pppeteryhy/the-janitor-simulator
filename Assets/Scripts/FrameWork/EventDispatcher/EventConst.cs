@@ -20,4 +20,8 @@ public class EventConst
     public const string EVENT_OnBreakPickUp = "BreakPickUp";
     //<玩家检索到垃圾时
     public const string EVENT_OnLockGarbage = "LockGarbagePos";
+    //<当玩家切换状态时
+    public const string EVENT_OnToolSwitch = "SwitchTool";
+    //<当玩家使用清洁工具时
+    public const string EVENT_OnToolUse = "UseTool";
 }

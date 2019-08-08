@@ -150,15 +150,42 @@ public class JSFPSController : MonoBehaviour
         }
 
         //捡垃圾
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && garbage != null)
         {
-            if(garbage != null)
+            if(garbage.toolType == InventoryManager.Instance.GetCurrentTool().toolType)
             {
                 Action tmp;
                 tmp = garbage.OnCleaned;
+                tmp += () =>
+                {
+                    garbage = null;
+                    InventoryManager.Instance.UseTool();
+                };
                 EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, garbage.cleaningTimeNeeded, tmp);
             }
+            else
+            {
+                Debug.Log("请更换清洁工具");
+            }
 
+        }
+
+        //切换装备
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            InventoryManager.Instance.SwitchTool();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            InventoryManager.Instance.SwitchTool(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            InventoryManager.Instance.SwitchTool(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            InventoryManager.Instance.SwitchTool(2);
         }
     }
 

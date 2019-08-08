@@ -9,6 +9,7 @@ public class GameEntry : MonoBehaviour {
         DontDestroyOnLoad(this.gameObject);
         AudioManager.Instance.Init();
         UIManager.Instance.Init();
+        InventoryManager.Instance.Init();
 	}
 	
 	// Update is called once per frame
