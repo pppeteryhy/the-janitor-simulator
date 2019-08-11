@@ -28,6 +28,7 @@ public class UIScreenHUD : UIScreen
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnBreakPickUp, CancelLockTarget);
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnToolSwitch, OnToolSwitch);
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnToolUse, OnToolUse);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnPickedUp, CancelLockTarget);
     }
 
     protected override void InitData()
@@ -54,6 +55,7 @@ public class UIScreenHUD : UIScreen
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnBreakPickUp, CancelLockTarget);
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnToolSwitch, OnToolSwitch);
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnToolUse, OnToolUse);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnPickedUp, CancelLockTarget);
     }
 
 

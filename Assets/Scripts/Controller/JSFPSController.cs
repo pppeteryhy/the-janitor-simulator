@@ -170,20 +170,30 @@ public class JSFPSController : MonoBehaviour
         //捡垃圾
         if (Input.GetKeyDown(KeyCode.E) && garbage != null)
         {
-            if(garbage.toolType == InventoryManager.Instance.GetCurrentTool().toolType)
+            JanitorTool cTool = InventoryManager.Instance.GetCurrentTool();
+            if (garbage.toolType == cTool.toolType)
             {
-                Action tmp;
-                tmp = garbage.OnCleaned;
-                tmp += () =>
+                if (cTool.IsUseable)
                 {
-                    garbage = null;
-                    InventoryManager.Instance.UseTool();
-                };
-                EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, garbage.cleaningTimeNeeded, tmp);
-                for (int i = 0; i < m_Animators.Length; i++)
-                {
-                    m_Animators[i].SetBool("Clean", m_Input.sqrMagnitude > 0.1f);
+                    Action tmp;
+                    tmp = garbage.OnCleaned;
+                    tmp += () =>
+                    {
+                        garbage = null;
+                        InventoryManager.Instance.UseTool();
+                        EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnPickedUp);
+                    };
+                    EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, garbage.cleaningTimeNeeded, tmp);
+                    for (int i = 0; i < m_Animators.Length; i++)
+                    {
+                        m_Animators[i].SetBool(cTool.animTrigger, m_Input.sqrMagnitude > 0.1f);
+                    }
                 }
+                else
+                {
+                    UIManager.Instance.ShowMessage<UIMessageInGame>(UIDepthConst.TopDepth, "Your tool doesn't have enough cleanliness!", 1.0f);
+                }
+
             }
             else
             {
