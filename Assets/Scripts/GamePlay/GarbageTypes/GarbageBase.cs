@@ -6,6 +6,8 @@ public class GarbageBase : MonoBehaviour {
 
     public GarbageType _garbageType;
     [HideInInspector]
+    public string garbageName;
+    [HideInInspector]
     public int cleaningValueCost;
     [HideInInspector]
     public float cleaningTimeNeeded;
@@ -21,10 +23,12 @@ public class GarbageBase : MonoBehaviour {
     private void Start()
     {
         Init();
+        ParseGarbageData();
     }
 
     private void ParseGarbageData()
     {
+        garbageName = GarbageModel.Instance.GetName((int)_garbageType);
         cleaningValueCost = GarbageModel.Instance.GetCleaningValueCost((int)_garbageType);
         cleaningTimeNeeded = GarbageModel.Instance.GetCleaningValueCost((int)_garbageType);
         pacCapcityCost = GarbageModel.Instance.GetPacCapcityCost((int)_garbageType);

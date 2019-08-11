@@ -157,7 +157,8 @@ public class JSFPSController : MonoBehaviour
         m_pRaycaster.RaycastToSearch(5, out garbage);
         if(garbage != null)
         {
-            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnLockGarbage, garbage.transform.position);
+            print(garbage.garbageName);
+            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnLockGarbage, garbage.transform.position, garbage.garbageName);
             previousGarbage = garbage;
             garbage.EnableOutlineColor();
         }else if(previousGarbage != null)

@@ -156,6 +156,11 @@ Prefab:
       propertyPath: m_Name
       value: Garbage_Bag (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 114072094237619084, guid: cc11e954639ef7c448ef57dcb9891c80,
+        type: 2}
+      propertyPath: _garbageType
+      value: 1001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc11e954639ef7c448ef57dcb9891c80, type: 2}
   m_IsPrefabAsset: 0
@@ -449,6 +454,11 @@ Prefab:
       propertyPath: m_Name
       value: Garbage_Bag (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 114072094237619084, guid: cc11e954639ef7c448ef57dcb9891c80,
+        type: 2}
+      propertyPath: _garbageType
+      value: 1001
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc11e954639ef7c448ef57dcb9891c80, type: 2}
   m_IsPrefabAsset: 0
@@ -578,6 +588,11 @@ Prefab:
     - target: {fileID: 1300773890889182, guid: cc11e954639ef7c448ef57dcb9891c80, type: 2}
       propertyPath: m_Name
       value: Garbage_Bag (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 114072094237619084, guid: cc11e954639ef7c448ef57dcb9891c80,
+        type: 2}
+      propertyPath: _garbageType
+      value: 1001
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc11e954639ef7c448ef57dcb9891c80, type: 2}

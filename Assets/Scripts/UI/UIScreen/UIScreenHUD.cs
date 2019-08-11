@@ -7,9 +7,11 @@ using System;
 public class UIScreenHUD : UIScreen
 {
     public Text txt_TimeLeft;
-    public Image garbageNotice;
+    public GameObject garbageNotice;
+    public Text txt_garName;
     public Image selectSlotNotice;
     public GameObject[] toolSlots;
+    public Image[] toolIcons;
     public Slider pickupSlider;
 
     private float totalTime;
@@ -31,12 +33,16 @@ public class UIScreenHUD : UIScreen
     protected override void InitData()
     {
         totalTime = ParseDataByIndex<float>(0);
-
+        for (int i = 0; i < toolIcons.Length; i++)
+        {
+            toolIcons[i].sprite = ResourceLoader.Instance.Load<Sprite>(InventoryManager.Instance.toolRepo[i].iconPath);
+        }
     }
 
     protected override void InitView()
     {
         UIUtilities.DoFadeUI(pickupSlider.gameObject, 0, 0f, Ease.InOutBack);
+        garbageNotice.SetActive(false);
     }
     
     public override void OnClose()
@@ -100,14 +106,16 @@ public class UIScreenHUD : UIScreen
     private void UpdateLockingGarbage(object[] data)
     {
         Vector3 gabagePos = (Vector3)data[0];
-        garbageNotice.gameObject.SetActive(true);
+        string garName = (string)data[1];
+        txt_garName.text = garName;
+        garbageNotice.SetActive(true);
         Vector2 world2ScreenPos = mainCam.WorldToScreenPoint(gabagePos);
         (garbageNotice.transform as RectTransform).anchoredPosition = world2ScreenPos;
     }
 
     private void CancelLockTarget(object[] data)
     {
-        garbageNotice.gameObject.SetActive(false);
+        garbageNotice.SetActive(false);
     }
 
     private void OnToolSwitch(object[] data)
