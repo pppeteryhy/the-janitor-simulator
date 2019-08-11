@@ -78,7 +78,10 @@ public class GarbageBase : MonoBehaviour {
 public enum GarbageType
 {
     Paper = 1001,
-    Food = 1002,
+    CardboardBox = 1002,
     ChewingGum = 1003,
-    Stain = 1004
+    Stain = 1004,
+    MetalStuff = 1005,
+    GarbageBag = 1006
+    
 }
