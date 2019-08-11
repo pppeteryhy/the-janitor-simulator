@@ -784,7 +784,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4531607407450130}
-  - component: {fileID: 111719662953647556}
   m_Layer: 0
   m_Name: FPArms_Male_Latex-Gloves_LPR_LOD0
   m_TagString: Untagged
@@ -2159,30 +2158,6 @@ Transform:
   m_Father: {fileID: 4205988476745866}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &111719662953647556
-Animation:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1690256790202070}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 7032f0563aada4550be0b8622bceee75, type: 3}
-  m_Animations:
-  - {fileID: 7400000, guid: b989755764ef340bd80e026b7f340e12, type: 3}
-  - {fileID: 7400000, guid: 9fcfec54dcc6f4783a49ebf9f21e2db0, type: 3}
-  - {fileID: 7400000, guid: a36ff5c2c042b4a66bb777b70382098c, type: 3}
-  - {fileID: 7400000, guid: 62b71f62818c744948f83c5249c190ce, type: 3}
-  - {fileID: 7400000, guid: 740cf5756b8d64df98116363ea484c9f, type: 3}
-  - {fileID: 7400000, guid: 74d4422354913497980c69b03d243cd5, type: 3}
-  - {fileID: 7400000, guid: 7032f0563aada4550be0b8622bceee75, type: 3}
-  - {fileID: 7400000, guid: 6b8819197656847288183a4e254f00c8, type: 3}
-  - {fileID: 7400000, guid: 3625c8fe45a7c451f863088bad76723a, type: 3}
-  - {fileID: 7400000, guid: c04a6f098b7b14f71932dfef61ba55a2, type: 3}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!137 &137319846425980854
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

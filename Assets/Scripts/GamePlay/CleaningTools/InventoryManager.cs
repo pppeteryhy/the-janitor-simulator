@@ -13,14 +13,26 @@ public enum ToolType
 
 public class JanitorTool
 {
+    public int ID;
     public ToolType toolType;
     public int maxClean;
     public int currentClean;
+    public Vector3 posOffset;
+    public Vector3 rotOffset;
+    public string prefabPath;
+    public string iconPath;
+    public string animTrigger;
 
-    public JanitorTool(ToolType _toolType, int _maxClean)
+    public JanitorTool(int _ID)
     {
-        toolType = _toolType;
-        maxClean = _maxClean;
+        ID = _ID;
+        toolType = ToolModel.Instance.GetToolType(ID);
+        maxClean = ToolModel.Instance.GetMaxClean(ID);
+        posOffset = ToolModel.Instance.GetPosOffset(ID);
+        rotOffset = ToolModel.Instance.GetRotOffset(ID);
+        prefabPath = ToolModel.Instance.GetPrefabPath(ID);
+        iconPath = ToolModel.Instance.GetIconPath(ID);
+        animTrigger = ToolModel.Instance.GetAnimationTrigger(ID);
         currentClean = maxClean;
     }
 
@@ -44,17 +56,20 @@ public class InventoryManager : MonoSingleton<InventoryManager> {
     //装备管理类
 
     //所有清洁工具的列表
+    [HideInInspector]
     public List<JanitorTool> toolRepo;
     [HideInInspector]
     public int currentTool = 0;
+
+    public List<int> defaultTools = new List<int>();
 
     public void Init()
     {
         toolRepo = new List<JanitorTool>()
         {
-            new JanitorTool(ToolType.Broom, 5),
-            new JanitorTool(ToolType.Rag, 8),
-            new JanitorTool(ToolType.Shovel, 2)
+            new JanitorTool(defaultTools[0]),
+            new JanitorTool(defaultTools[1]),
+            new JanitorTool(defaultTools[2])
         };
     }
 

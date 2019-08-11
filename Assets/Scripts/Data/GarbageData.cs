@@ -14,7 +14,7 @@ public class GarbageData : Singleton<GarbageData>
     {
         {1001, new Dictionary<string, string>(){ {"Name", "Paper"}, {"ToolNeed", "Gloves"}, {"pacCapcityCost", "3"}, {"cleaningValueCost", "1"}, {"cleaningTimeNeeded", "1"}, {"needPackage", "TRUE"}, } },
         {1002, new Dictionary<string, string>(){ {"Name", "Food"}, {"ToolNeed", "Broom"}, {"pacCapcityCost", "2"}, {"cleaningValueCost", "1"}, {"cleaningTimeNeeded", "2"}, {"needPackage", "TRUE"}, } },
-        {1003, new Dictionary<string, string>(){ {"Name", "ChewingGum"}, {"ToolNeed", "    Shovel"}, {"pacCapcityCost", "1"}, {"cleaningValueCost", "1"}, {"cleaningTimeNeeded", "3"}, {"needPackage", "TRUE"}, } },
+        {1003, new Dictionary<string, string>(){ {"Name", "ChewingGum"}, {"ToolNeed", "Shovel"}, {"pacCapcityCost", "1"}, {"cleaningValueCost", "1"}, {"cleaningTimeNeeded", "3"}, {"needPackage", "TRUE"}, } },
         {1004, new Dictionary<string, string>(){ {"Name", "Stain"}, {"ToolNeed", "Mop"}, {"pacCapcityCost", "0"}, {"cleaningValueCost", "1"}, {"cleaningTimeNeeded", "4"}, {"needPackage", "FALSE"}, } },
     };
 

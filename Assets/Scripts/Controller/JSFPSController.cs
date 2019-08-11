@@ -26,7 +26,8 @@ public class JSFPSController : MonoBehaviour
     [SerializeField] private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
     [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
     [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
-    [SerializeField] private PlayerRaycaster m_pRaycaster; 
+    [SerializeField] private PlayerRaycaster m_pRaycaster;
+    [SerializeField] private Transform m_ToolGrabPoint;
 
     private Camera m_Camera;
     private bool m_Jump;
@@ -41,7 +42,9 @@ public class JSFPSController : MonoBehaviour
     private float m_NextStep;
     private bool m_Jumping;
     private AudioSource m_AudioSource;
+    private Animator[] m_Animators;
     private GarbageBase previousGarbage;
+    private GameObject currentTool;
 
     // Use this for initialization
     private void Start()
@@ -55,6 +58,7 @@ public class JSFPSController : MonoBehaviour
         m_NextStep = m_StepCycle / 2f;
         m_Jumping = false;
         m_AudioSource = GetComponent<AudioSource>();
+        m_Animators = GetComponentsInChildren<Animator>();
         m_MouseLook.Init(transform, m_Camera.transform);
     }
 
@@ -63,6 +67,7 @@ public class JSFPSController : MonoBehaviour
     private void Update()
     {
         RotateView();
+        UpdateAnimator();
         // the jump state needs to read here to make sure it is not missed
         if (!m_Jump)
         {
@@ -75,7 +80,7 @@ public class JSFPSController : MonoBehaviour
             PlayLandingSound();
             m_MoveDir.y = 0f;
             m_Jumping = false;
-            //当角色落地时，重置跳跃，y方向的移动置
+            //当角色落地时，重置跳跃，y方向的移动置0
         }
         if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
         {
@@ -91,6 +96,14 @@ public class JSFPSController : MonoBehaviour
         m_AudioSource.clip = m_LandSound;
         m_AudioSource.Play();
         m_NextStep = m_StepCycle + .5f;
+    }
+
+    private void UpdateAnimator()
+    {
+        for (int i = 0; i < m_Animators.Length; i++)
+        {
+            m_Animators[i].SetBool("IsWalking", m_Input.sqrMagnitude > 0.1f);
+        }
     }
 
 
@@ -118,6 +131,10 @@ public class JSFPSController : MonoBehaviour
             // 在地面上才能跳跃
             if (m_Jump)
             {
+                for (int i = 0; i < m_Animators.Length; i++)
+                {
+                    m_Animators[i].SetBool("Jump", m_Input.sqrMagnitude > 0.1f);
+                }
                 m_MoveDir.y = m_JumpSpeed;
                 PlayJumpSound();
                 m_Jump = false;
@@ -162,10 +179,14 @@ public class JSFPSController : MonoBehaviour
                     InventoryManager.Instance.UseTool();
                 };
                 EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, garbage.cleaningTimeNeeded, tmp);
+                for (int i = 0; i < m_Animators.Length; i++)
+                {
+                    m_Animators[i].SetBool("Clean", m_Input.sqrMagnitude > 0.1f);
+                }
             }
             else
             {
-                Debug.Log("请更换清洁工具");
+                UIManager.Instance.ShowMessage<UIMessageInGame>(UIDepthConst.TopDepth, "Please choose suitable janitor tool！", 1.0f);
             }
 
         }
@@ -174,21 +195,39 @@ public class JSFPSController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             InventoryManager.Instance.SwitchTool();
+            OnSwicthTool();
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             InventoryManager.Instance.SwitchTool(0);
+            OnSwicthTool();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             InventoryManager.Instance.SwitchTool(1);
+            OnSwicthTool();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             InventoryManager.Instance.SwitchTool(2);
+            OnSwicthTool();
         }
     }
 
+    //在切换工具时，手上的工具保持切换
+    private void OnSwicthTool()
+    {
+        if(currentTool != null)
+        {
+            Destroy(currentTool);
+        }
+        JanitorTool toolIns = InventoryManager.Instance.GetCurrentTool();
+        print(toolIns.prefabPath);
+        currentTool = Instantiate(ResourceLoader.Instance.Load<GameObject>(toolIns.prefabPath));
+        currentTool.transform.SetParent(m_ToolGrabPoint);
+        currentTool.transform.localPosition = toolIns.posOffset;
+        currentTool.transform.localEulerAngles = toolIns.rotOffset;
+    }
 
     private void PlayJumpSound()
     {

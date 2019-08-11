@@ -20,6 +20,7 @@ public class UIManager : MonoSingleton<UIManager>
     private Dictionary<UIDepthConst, Stack<UIScreen>> screenOpened;
     private Dictionary<UIDepthConst, Transform> depthTrans;
     private Dictionary<Type, UIScreen> screenPool;
+    private Dictionary<Type,UIMessage> openingMsgScreen;
     private Transform uiRoot;
 
 
@@ -30,6 +31,7 @@ public class UIManager : MonoSingleton<UIManager>
         screenOpened = new Dictionary<UIDepthConst, Stack<UIScreen>>();
         depthTrans = new Dictionary<UIDepthConst, Transform>();
         screenPool = new Dictionary<Type, UIScreen>();
+        openingMsgScreen = new Dictionary<Type, UIMessage>();
         uiRoot = GameObject.Find("UIRoot").transform;
         UIDepth[] uiCollections = uiRoot.GetComponentsInChildren<UIDepth>();
         for (int i = 0; i < uiCollections.Length; i++)
@@ -98,6 +100,43 @@ public class UIManager : MonoSingleton<UIManager>
             screenOpened[uIDepthConst].Peek().OnShow();
         }
         return screenToPop;
+    }
+
+    //重载， 泛型， where用于约束泛型
+    //Push用打开某个UI界面
+    public T ShowMessage<T>(UIDepthConst uIDepthConst,params object[] data) where T : UIMessage
+    {
+        return (T)ShowMessage(typeof(T), uIDepthConst, data);
+    }
+
+    //打开一个消息提示
+    private UIScreen ShowMessage(Type screenType, UIDepthConst uIDepthConst, params object[] data)
+    {
+        if (!screenDic.ContainsKey(screenType))
+        {
+            Debug.LogWarning("You are trying to open a screen not included in the folder");
+            return null;
+        }
+        if (openingMsgScreen.ContainsKey(screenType))
+        {
+            Destroy(openingMsgScreen[screenType].gameObject);
+            openingMsgScreen.Remove(screenType);
+        }
+
+        UIMessage msgScreen = UnityEngine.Object.Instantiate(screenDic[screenType], depthTrans[uIDepthConst]) as UIMessage;
+        openingMsgScreen.Add(screenType, msgScreen);
+        msgScreen.OnInit(data);
+        return msgScreen;
+    }
+
+    //关闭消息
+    public void RemoveMessage(Type screenType)
+    {
+        if (openingMsgScreen.ContainsKey(screenType))
+        {
+            Destroy(openingMsgScreen[screenType].gameObject);
+            openingMsgScreen.Remove(screenType);
+        }
     }
 
     //返回到主菜单
