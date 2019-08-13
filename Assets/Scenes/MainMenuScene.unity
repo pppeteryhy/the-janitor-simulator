@@ -693,7 +693,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTool: 0
-  defaultTools: ea030000ec030000ea030000
+  defaultTools: e9030000ec030000ea030000
 --- !u!1 &1128922618
 GameObject:
   m_ObjectHideFlags: 0

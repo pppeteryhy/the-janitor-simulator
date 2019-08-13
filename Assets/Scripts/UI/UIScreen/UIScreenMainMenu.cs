@@ -29,15 +29,7 @@ public class UIScreenMainMenu : UIScreen
 
     private void OnLevelSelectionButtonClicked()
     {
-        //UIManager.Instance.Push<UIScreenLevelSelection>(UIDepthConst.MiddleDepth, true);
-        UIManager.Instance.Push<UIScreenLoading>(UIDepthConst.TopDepth, true);
-        UIManager.Instance.Pop(UIDepthConst.BottomDepth);
-        SceneManager.LoadSceneAsync("Level1").completed += delegate
-        {
-            UIManager.Instance.Pop(UIDepthConst.TopDepth);
-            UIManager.Instance.Push<UIScreenHUD>(UIDepthConst.MiddleDepth, true, 120f);
-            JSGameManager.Instance.LevelStart();
-        };
+        UIManager.Instance.Push<UIScreenLevelSelection>(UIDepthConst.MiddleDepth, true);
     }
 
     private void OnOptionsButtonClicked()

@@ -13,9 +13,11 @@ public class GarbageData : Singleton<GarbageData>
     public Dictionary<int, Dictionary<string, string>> data = new Dictionary<int, Dictionary<string, string>>()
     {
         {1001, new Dictionary<string, string>(){ {"Name", "Paper"}, {"ToolNeed", "Broom"}, {"pacCapcityCost", "2"}, {"cleaningValueCost", "1"}, {"cleaningTimeNeeded", "2"}, {"needPackage", "TRUE"}, } },
-        {1002, new Dictionary<string, string>(){ {"Name", "Food"}, {"ToolNeed", "Gloves&Rag"}, {"pacCapcityCost", "3"}, {"cleaningValueCost", "3"}, {"cleaningTimeNeeded", "3"}, {"needPackage", "TRUE"}, } },
+        {1002, new Dictionary<string, string>(){ {"Name", "CardboardBox"}, {"ToolNeed", "Gloves"}, {"pacCapcityCost", "3"}, {"cleaningValueCost", "3"}, {"cleaningTimeNeeded", "3"}, {"needPackage", "TRUE"}, } },
         {1003, new Dictionary<string, string>(){ {"Name", "ChewingGum"}, {"ToolNeed", "Shovel"}, {"pacCapcityCost", "1"}, {"cleaningValueCost", "4"}, {"cleaningTimeNeeded", "5"}, {"needPackage", "TRUE"}, } },
-        {1004, new Dictionary<string, string>(){ {"Name", "Stain"}, {"ToolNeed", "Mop&Rag"}, {"pacCapcityCost", "0"}, {"cleaningValueCost", "3"}, {"cleaningTimeNeeded", "4"}, {"needPackage", "FALSE"}, } },
+        {1004, new Dictionary<string, string>(){ {"Name", "Stain"}, {"ToolNeed", "Mop"}, {"pacCapcityCost", "0"}, {"cleaningValueCost", "3"}, {"cleaningTimeNeeded", "4"}, {"needPackage", "FALSE"}, } },
+        {1005, new Dictionary<string, string>(){ {"Name", "   MetalStuff"}, {"ToolNeed", "Broom"}, {"pacCapcityCost", "4"}, {"cleaningValueCost", "1"}, {"cleaningTimeNeeded", "3"}, {"needPackage", "TRUE"}, } },
+        {1006, new Dictionary<string, string>(){ {"Name", "   GarbageBag"}, {"ToolNeed", "Gloves"}, {"pacCapcityCost", "5"}, {"cleaningValueCost", "1"}, {"cleaningTimeNeeded", "2"}, {"needPackage", "TRUE"}, } },
     };
 
 }

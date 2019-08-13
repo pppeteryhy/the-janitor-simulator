@@ -4704,6 +4704,13 @@ MonoBehaviour:
   m_LandSound: {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
   m_pRaycaster: {fileID: 114986253416318228}
   m_ToolGrabPoint: {fileID: 4648998860684890}
+  m_HandRenderes:
+  - {fileID: 137691113081084004}
+  - {fileID: 137411080186274566}
+  m_meshes:
+  - {fileID: 4300002, guid: a189065f380d14fc9b6ad984c7bc66fd, type: 3}
+  - {fileID: 4300000, guid: a189065f380d14fc9b6ad984c7bc66fd, type: 3}
+  material: {fileID: 2100000, guid: 5c6e0d4ea07764bf3819146c92ee85e2, type: 2}
 --- !u!114 &114704091207548418
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4962,7 +4969,7 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: ed17f8685e3254561a5c193e1666ca49, type: 2}
+  - {fileID: 2100000, guid: 9caa1d0c9ab68420fb41c0c8cf73ea4a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4986,7 +4993,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300000, guid: 06fab73b0c756462bae4569bc1d890c9, type: 3}
+  m_Mesh: {fileID: 4300000, guid: a189065f380d14fc9b6ad984c7bc66fd, type: 3}
   m_Bones:
   - {fileID: 4278264419792678}
   - {fileID: 4713407255443166}

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class JSGameManager : MonoSingleton<JSGameManager> {
 
+    public static int currentLevelID;
 
     public void LevelStart()
     {

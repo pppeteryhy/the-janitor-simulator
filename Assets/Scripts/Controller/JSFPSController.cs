@@ -28,6 +28,9 @@ public class JSFPSController : MonoBehaviour
     [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
     [SerializeField] private PlayerRaycaster m_pRaycaster;
     [SerializeField] private Transform m_ToolGrabPoint;
+    [SerializeField] private SkinnedMeshRenderer[] m_HandRenderes;
+    [SerializeField] private Mesh[] m_meshes;
+    [SerializeField] private Material material;
 
     private Camera m_Camera;
     private bool m_Jump;
@@ -233,11 +236,23 @@ public class JSFPSController : MonoBehaviour
             Destroy(currentTool);
         }
         JanitorTool toolIns = InventoryManager.Instance.GetCurrentTool();
-        print(toolIns.prefabPath);
-        currentTool = Instantiate(ResourceLoader.Instance.Load<GameObject>(toolIns.prefabPath));
-        currentTool.transform.SetParent(m_ToolGrabPoint);
-        currentTool.transform.localPosition = toolIns.posOffset;
-        currentTool.transform.localEulerAngles = toolIns.rotOffset;
+        switch (toolIns.ID)
+        {
+            case 1001:
+                m_HandRenderes[0].sharedMesh = m_meshes[0]; //ResourceLoader.Instance.Load<Mesh>("111");
+                m_HandRenderes[1].sharedMesh = m_meshes[1]; //ResourceLoader.Instance.Load<Mesh>("111");
+                m_HandRenderes[0].material = material;
+                m_HandRenderes[1].material = material;
+                break;
+            case 1002:
+            case 1003:
+            case 1004:
+                currentTool = Instantiate(ResourceLoader.Instance.Load<GameObject>(toolIns.prefabPath));
+                currentTool.transform.SetParent(m_ToolGrabPoint);
+                currentTool.transform.localPosition = toolIns.posOffset;
+                currentTool.transform.localEulerAngles = toolIns.rotOffset;
+                break;
+        }
     }
 
     private void PlayJumpSound()

@@ -29,6 +29,13 @@ public class UIScreenCredits : UIScreen
         rightPanel.DOAnchorPos(new Vector2(1000, 0), 0.5f).onComplete = OnClose;
     }
 
+    public override void OnClose()
+    {
+        base.OnClose();
+        btnMore.onClick.RemoveAllListeners();
+        btnBack.onClick.RemoveAllListeners();
+    }
+
     private void OnMoreButtonClicked()
     {
         Application.OpenURL("http://pppeteryao.strikingly.com");
