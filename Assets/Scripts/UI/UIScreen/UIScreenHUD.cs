@@ -13,6 +13,7 @@ public class UIScreenHUD : UIScreen
     public GameObject[] toolSlots;
     public Image[] toolIcons;
     public Slider pickupSlider;
+    public Slider CapacitySlider;
 
     private float totalTime;
     private float attackedNoticeTime;
@@ -29,6 +30,7 @@ public class UIScreenHUD : UIScreen
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnToolSwitch, OnToolSwitch);
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnToolUse, OnToolUse);
         EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnPickedUp, CancelLockTarget);
+        EventDispatcher.Outer.AddEventListener(EventConst.EVENT_OnCapacityChanges, OnPackgaeCapacityChange);
     }
 
     protected override void InitData()
@@ -43,6 +45,7 @@ public class UIScreenHUD : UIScreen
     protected override void InitView()
     {
         UIUtilities.DoFadeUI(pickupSlider.gameObject, 0, 0f, Ease.InOutBack);
+        CapacitySlider.maxValue = PackageManager.Instance.maxCapacity;
         garbageNotice.SetActive(false);
     }
     
@@ -56,6 +59,7 @@ public class UIScreenHUD : UIScreen
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnToolSwitch, OnToolSwitch);
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnToolUse, OnToolUse);
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnPickedUp, CancelLockTarget);
+        EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnCapacityChanges, OnPackgaeCapacityChange);
     }
 
 
@@ -149,5 +153,11 @@ public class UIScreenHUD : UIScreen
                 slider.value = currentClean / maxClean;
             }
         }
+    }
+
+    private void OnPackgaeCapacityChange(object[] datas)
+    {
+        int currentCap = (int)datas[0];
+        CapacitySlider.value = PackageManager.Instance.maxCapacity - currentCap;
     }
 }

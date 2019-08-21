@@ -26,4 +26,6 @@ public class EventConst
     public const string EVENT_OnToolSwitch = "SwitchTool";
     //<当玩家使用清洁工具时
     public const string EVENT_OnToolUse = "UseTool";
+    //<当玩家的垃圾袋清洁度发生变化时
+    public const string EVENT_OnCapacityChanges = "PackageCapacityChange";
 }

@@ -110,4 +110,9 @@ public class InventoryManager : MonoSingleton<InventoryManager> {
     {
         return toolRepo[currentTool];
     }
+
+    public void CleanCurrentTools()
+    {
+        GetCurrentTool().ResetClean();
+    }
 }

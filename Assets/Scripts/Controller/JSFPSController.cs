@@ -46,7 +46,7 @@ public class JSFPSController : MonoBehaviour
     private bool m_Jumping;
     private AudioSource m_AudioSource;
     private Animator[] m_Animators;
-    private GarbageBase previousGarbage;
+    private IOutline previousOutlineObj;
     private GameObject currentTool;
 
     // Use this for initialization
@@ -157,34 +157,57 @@ public class JSFPSController : MonoBehaviour
 
         //搜索垃圾
         GarbageBase garbage;
-        m_pRaycaster.RaycastToSearch(5, out garbage);
-        if(garbage != null)
-        {
-            print(garbage.garbageName);
-            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnLockGarbage, garbage.transform.position, garbage.garbageName);
-            previousGarbage = garbage;
-            garbage.EnableOutlineColor();
-        }else if(previousGarbage != null)
+        GarbageCollectorCar garbageCar;
+        IOutline outlineObj;
+        m_pRaycaster.RaycastToSearch(5, out garbage, out garbageCar, out outlineObj);
+        if (previousOutlineObj != null && previousOutlineObj.GetTransform() != null && previousOutlineObj != outlineObj)
         {
             EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnBreakPickUp);
-            previousGarbage.DisableOutlineColor();
+            previousOutlineObj.DisableOutlineColor();
         }
 
-        //捡垃圾
-        if (Input.GetKeyDown(KeyCode.E) && garbage != null)
+        if (outlineObj != null)
         {
-            JanitorTool cTool = InventoryManager.Instance.GetCurrentTool();
-            if (garbage.toolType == cTool.toolType)
+            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnLockGarbage, outlineObj.GetTransform().position, outlineObj.GetName());
+            previousOutlineObj = outlineObj;
+            outlineObj.EnableOutlineColor();
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            //捡垃圾
+            if (garbage != null)
             {
-                if (cTool.IsUseable)
+                JanitorTool cTool = InventoryManager.Instance.GetCurrentTool();
+                bool canClean = true;
+                //当所持工具类型不匹配
+                if (garbage.toolType != cTool.toolType)
+                {
+                    canClean = false;
+                    UIManager.Instance.ShowMessage<UIMessageInGame>(UIDepthConst.TopDepth, "Please choose suitable janitor tool！", 1.0f);
+                }
+                //当工具耐久度不够
+                if (!cTool.IsUseable)
+                {
+                    canClean = false;
+                    UIManager.Instance.ShowMessage<UIMessageInGame>(UIDepthConst.TopDepth, "Your tool doesn't have enough cleanliness!", 1.0f);
+                }
+                //当垃圾袋容量不够
+                if (!PackageManager.Instance.HasEnoughCapacity(garbage.pacCapcityCost))
+                {
+                    canClean = false;
+                    UIManager.Instance.ShowMessage<UIMessageInGame>(UIDepthConst.TopDepth, "Your package bag doesn't have enough capacity!", 1.0f);
+                }
+                if (canClean)
                 {
                     Action tmp;
                     tmp = garbage.OnCleaned;
                     tmp += () =>
                     {
-                        garbage = null;
                         InventoryManager.Instance.UseTool();
+                        PackageManager.Instance.OnPackageUse(garbage.pacCapcityCost);
                         EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnPickedUp);
+                        garbage = null;
                     };
                     EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, garbage.cleaningTimeNeeded, tmp);
                     for (int i = 0; i < m_Animators.Length; i++)
@@ -192,17 +215,18 @@ public class JSFPSController : MonoBehaviour
                         m_Animators[i].SetBool(cTool.animTrigger, m_Input.sqrMagnitude > 0.1f);
                     }
                 }
-                else
-                {
-                    UIManager.Instance.ShowMessage<UIMessageInGame>(UIDepthConst.TopDepth, "Your tool doesn't have enough cleanliness!", 1.0f);
-                }
-
             }
-            else
+            //到垃圾车处清理
+            else if(garbageCar != null)
             {
-                UIManager.Instance.ShowMessage<UIMessageInGame>(UIDepthConst.TopDepth, "Please choose suitable janitor tool！", 1.0f);
+                Action tmp = null;
+                tmp += () =>
+                {
+                    InventoryManager.Instance.CleanCurrentTools();
+                    PackageManager.Instance.ResetCapacity();
+                };
+                EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, GameSetting.TimeNeedForCleaningTools, tmp);
             }
-
         }
 
         //切换装备

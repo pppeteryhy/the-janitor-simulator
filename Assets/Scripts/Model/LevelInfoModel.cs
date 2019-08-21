@@ -97,6 +97,23 @@ public class LevelInfoModel : Singleton<LevelInfoModel> {
         }
         return res;
     }
+
+    public int GetEvaluationByTimeLeft(int id, float timeLeft)
+    {
+        int res = 0;
+        if (data.ContainsKey(id))
+        {
+            string[] strs = data[id]["TimeLeftForEvaluation"].Split(',');
+            for (int i = 0; i < strs.Length; i++)
+            {
+                if(timeLeft > float.Parse(strs[i]))
+                {
+                    return 3 - i;
+                }
+            }
+        }
+        return res;
+    }
     
 
     ///<<<<<INDEX

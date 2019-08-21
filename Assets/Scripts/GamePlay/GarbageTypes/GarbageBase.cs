@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GarbageBase : MonoBehaviour {
+public class GarbageBase : MonoBehaviour, IOutline {
 
     public GarbageType _garbageType;
     [HideInInspector]
@@ -22,7 +22,7 @@ public class GarbageBase : MonoBehaviour {
 
     private void Start()
     {
-        Init();
+        InitOutline();
         ParseGarbageData();
     }
 
@@ -36,7 +36,7 @@ public class GarbageBase : MonoBehaviour {
         toolType = GarbageModel.Instance.GetToolNeed((int)_garbageType);
     }
 
-    public void Init()
+    public void InitOutline()
     {
         _outlines = new List<QuickOutline>();
         MeshRenderer[] meshes = GetComponentsInChildren<MeshRenderer>();
@@ -53,7 +53,7 @@ public class GarbageBase : MonoBehaviour {
     public void OnCleaned()
     {
         if(needPackage)
-            PackageManager.Instance.CurrentCapcity += pacCapcityCost;
+            PackageManager.Instance.CurrentCapacity += pacCapcityCost;
 
         Destroy(this.gameObject);
     }
@@ -72,6 +72,20 @@ public class GarbageBase : MonoBehaviour {
         {
             _outlines[i].enabled = false;
         }
+    }
+
+    public string GetName()
+    {
+        if (this != null)
+            return garbageName;
+        return null;
+    }
+
+    public Transform GetTransform()
+    {
+        if(this != null)
+            return this.transform;
+        return null;
     }
 }
 

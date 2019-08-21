@@ -4,22 +4,40 @@ using UnityEngine;
 
 public class PackageManager : MonoSingleton<PackageManager> {
 
-    public int maxCapcity;
-    private int currentCapcity;
-    public int CurrentCapcity
+    public int maxCapacity;
+    private int currentCapacity;
+    public int CurrentCapacity
     {
-        get { return currentCapcity; }
+        get { return currentCapacity; }
         set
         {
-            currentCapcity = value;
-            if (currentCapcity > maxCapcity)
-                currentCapcity = maxCapcity;
+            EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnCapacityChanges, value);
+            currentCapacity = value;
+            if (currentCapacity > maxCapacity)
+                currentCapacity = maxCapacity;
         }
     }
 
-    public bool IsFull
+    public void Init()
     {
-        get { return currentCapcity >= maxCapcity; }
+        currentCapacity = maxCapacity;
+    }
+
+    public bool HasEnoughCapacity(int capacityNeed)
+    {
+        if (CurrentCapacity < capacityNeed)
+            return false;
+        return true;
+    }
+
+    public void OnPackageUse(int usedCapacity)
+    {
+        CurrentCapacity -= usedCapacity;
+    }
+
+    public void ResetCapacity()
+    {
+        CurrentCapacity = maxCapacity;
     }
 
 }
