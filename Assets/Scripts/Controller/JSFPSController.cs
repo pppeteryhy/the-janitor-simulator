@@ -159,7 +159,7 @@ public class JSFPSController : MonoBehaviour
         GarbageBase garbage;
         GarbageCollectorCar garbageCar;
         IOutline outlineObj;
-        m_pRaycaster.RaycastToSearch(5, out garbage, out garbageCar, out outlineObj);
+        m_pRaycaster.RaycastToSearch(1.5f, out garbage, out garbageCar, out outlineObj);
         if (previousOutlineObj != null && previousOutlineObj.GetTransform() != null && previousOutlineObj != outlineObj)
         {
             EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnBreakPickUp);
