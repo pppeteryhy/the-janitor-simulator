@@ -220,10 +220,14 @@ public class JSFPSController : MonoBehaviour
             else if(garbageCar != null)
             {
                 Action tmp = null;
+                JanitorTool cTool = InventoryManager.Instance.GetCurrentTool();
+                int toolIndex = InventoryManager.Instance.currentTool;
                 tmp += () =>
                 {
+                    EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnToolUse, toolIndex, (float)cTool.currentClean, (float)cTool.maxClean);
                     InventoryManager.Instance.CleanCurrentTools();
                     PackageManager.Instance.ResetCapacity();
+                    UIManager.Instance.ShowMessage<UIMessageInGame>(UIDepthConst.TopDepth, "Cleaned your tool and package successfully", 1.0f);
                 };
                 EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnStartPickUp, GameSetting.TimeNeedForCleaningTools, tmp);
             }

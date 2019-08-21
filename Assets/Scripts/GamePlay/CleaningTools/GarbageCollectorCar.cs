@@ -11,7 +11,7 @@ public class GarbageCollectorCar : MonoBehaviour, IOutline {
     // Use this for initialization
     void Start()
     {
-
+        InitOutline();
     }
 
     // Update is called once per frame
