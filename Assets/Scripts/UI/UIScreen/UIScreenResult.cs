@@ -8,7 +8,6 @@ public class UIScreenResult : UIScreen
 {
     public Button btnMainMenu;
     public Button btnTryAgain;
-    public Button btnNextLevel;
     public GameObject[] stars;
     public Text txtTimeLeft;
     public Text txtEvaluation;
@@ -23,13 +22,12 @@ public class UIScreenResult : UIScreen
         base.InitComponent();
         btnMainMenu.onClick.AddListener(OnMainMenuBtnClicked);
         btnTryAgain.onClick.AddListener(OnTryAgainBtnClicked);
-        btnNextLevel.onClick.AddListener(OnNextLevelBtnClicked);
     }
 
     protected override void InitData()
     {
         base.InitData();
-        timeLeft = ParseDataByIndex<float>(1);
+        timeLeft = ParseDataByIndex<float>(0);
         startCount = LevelInfoModel.Instance.GetEvaluationByTimeLeft(JSGameManager.currentLevelID, timeLeft);
         isWin = startCount == 0 ? false : true;
     }
@@ -37,13 +35,13 @@ public class UIScreenResult : UIScreen
     protected override void InitView()
     {
         base.InitView();
-        for (int i = stars.Length; i > startCount; i--)
+        for (int i = stars.Length -1 ; i >= startCount; i--)
         {
             stars[i].SetActive(false);
         }
         txtTimeLeft.text = timeLeft.ToString();
-        txtEvaluation.text = LevelInfoModel.Instance.GetLevelResultWord(JSGameManager.currentLevelID);
-        txtResultWord.text = LevelInfoModel.Instance.GetLevelResultWord(JSGameManager.currentLevelID);
+        txtEvaluation.text = isWin ? LevelInfoModel.Instance.GetLevelResultWord(JSGameManager.currentLevelID) : "Mission Failed";
+        txtResultWord.text = isWin ? LevelInfoModel.Instance.GetLevelResultWord(JSGameManager.currentLevelID) : "Don't give up!";
     }
 
     public override void OnClose()
@@ -51,21 +49,27 @@ public class UIScreenResult : UIScreen
         base.OnClose();
         btnMainMenu.onClick.RemoveAllListeners();
         btnTryAgain.onClick.RemoveAllListeners();
-        btnNextLevel.onClick.RemoveAllListeners();
     }
 
     private void OnMainMenuBtnClicked()
     {
-
+        UIManager.Instance.Push<UIScreenLoading>(UIDepthConst.TopDepth, true);
+        SceneManager.LoadSceneAsync("MainMenuScene").completed += delegate
+        {
+            UIManager.Instance.PopToBottom();
+        };
     }
 
     private void OnTryAgainBtnClicked()
     {
-
-    }
-
-    private void OnNextLevelBtnClicked()
-    {
-
+        UIManager.Instance.Pop(UIDepthConst.MiddleDepth);
+        UIManager.Instance.Pop(UIDepthConst.TopDepth);
+        UIManager.Instance.Push<UIScreenLoading>(UIDepthConst.TopDepth, true);
+        SceneManager.LoadSceneAsync(LevelInfoModel.Instance.GetSceneName(JSGameManager.currentLevelID)).completed += delegate
+        {
+            UIManager.Instance.Pop(UIDepthConst.TopDepth);
+            UIManager.Instance.Push<UIScreenHUD>(UIDepthConst.MiddleDepth, true, 120f);
+            JSGameManager.Instance.LevelStart();
+        };
     }
 }

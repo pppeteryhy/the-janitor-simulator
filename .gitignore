@@ -4,6 +4,7 @@
 /obj/*
 /.vs/*
 /.idea/*
+/Build/*
 *.csproj
 *.sln
 *.user

@@ -42,7 +42,7 @@ public class UIScreenLevelSelection : UIScreen
         }
         txt_LevelName.text = LevelInfoModel.Instance.GetLevelNameByIndex(currentLevelIndex);
         txt_LevelDescription.text = LevelInfoModel.Instance.GetLevelDescriptionByIndex(currentLevelIndex);
-        txt_TimeLimit.text = LevelInfoModel.Instance.GetTimeLimitByIndex(currentLevelIndex).ToString();
+        txt_TimeLimit.text = "Time Limit: " + LevelInfoModel.Instance.GetTimeLimitByIndex(currentLevelIndex).ToString();
 
     }
     
@@ -65,7 +65,7 @@ public class UIScreenLevelSelection : UIScreen
         ResetView();
         txt_LevelName.text = LevelInfoModel.Instance.GetLevelNameByIndex(0);
         txt_LevelDescription.text = LevelInfoModel.Instance.GetLevelDescriptionByIndex(0);
-        txt_TimeLimit.text = LevelInfoModel.Instance.GetTimeLimitByIndex(0).ToString();
+        txt_TimeLimit.text = "Time Limit: " + LevelInfoModel.Instance.GetTimeLimitByIndex(0).ToString();
     }
 
     public override void OnClose()
@@ -105,7 +105,7 @@ public class UIScreenLevelSelection : UIScreen
         SceneManager.LoadSceneAsync(LevelInfoModel.Instance.GetSceneNameByIndex(currentLevelIndex)).completed += delegate
         {
             UIManager.Instance.Pop(UIDepthConst.TopDepth);
-            UIManager.Instance.Push<UIScreenHUD>(UIDepthConst.MiddleDepth, true, 120f);
+            UIManager.Instance.Push<UIScreenHUD>(UIDepthConst.MiddleDepth, true, LevelInfoModel.Instance.GetTimeLimit(JSGameManager.currentLevelID));
             JSGameManager.Instance.LevelStart();
         };
     }

@@ -41,22 +41,22 @@ namespace UnityStandardAssets.Cameras
         }
 
 
-        protected void Update()
-        {
-            HandleRotationMovement();
-            if (m_LockCursor && Input.GetMouseButtonUp(0))
-            {
-                Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
-                Cursor.visible = !m_LockCursor;
-            }
-        }
+        //protected void Update()
+        //{
+        //    HandleRotationMovement();
+        //    if (m_LockCursor && Input.GetMouseButtonUp(0))
+        //    {
+        //        Cursor.lockState = m_LockCursor ? CursorLockMode.Locked : CursorLockMode.None;
+        //        Cursor.visible = !m_LockCursor;
+        //    }
+        //}
 
 
-        private void OnDisable()
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+        //private void OnDisable()
+        //{
+        //    Cursor.lockState = CursorLockMode.None;
+        //    Cursor.visible = true;
+        //}
 
 
         protected override void FollowTarget(float deltaTime)

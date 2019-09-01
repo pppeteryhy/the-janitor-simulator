@@ -32,6 +32,10 @@ public class JSFPSController : MonoBehaviour
     [SerializeField] private Mesh[] m_meshes;
     [SerializeField] private Material material;
 
+    private Mesh leftMesh;
+    private Mesh rightMesh;
+    private Material defaultMaterial;
+
     private Camera m_Camera;
     private bool m_Jump;
     private float m_YRotation;
@@ -63,12 +67,18 @@ public class JSFPSController : MonoBehaviour
         m_AudioSource = GetComponent<AudioSource>();
         m_Animators = GetComponentsInChildren<Animator>();
         m_MouseLook.Init(transform, m_Camera.transform);
+
+        leftMesh = m_HandRenderes[0].sharedMesh;
+        rightMesh = m_HandRenderes[1].sharedMesh;
+        defaultMaterial = m_HandRenderes[0].material;
     }
 
 
     // Update is called once per frame
     private void Update()
     {
+        if (JSGameManager.Instance.gameState != GameState.InGame)
+            return;
         RotateView();
         UpdateAnimator();
         // the jump state needs to read here to make sure it is not missed
@@ -112,6 +122,8 @@ public class JSFPSController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (JSGameManager.Instance.gameState != GameState.InGame)
+            return;
         float speed;
         GetInput(out speed);
         // always move along the camera forward as it is the direction that it being aimed at
@@ -153,7 +165,7 @@ public class JSFPSController : MonoBehaviour
         ProgressStepCycle(speed);
         UpdateCameraPosition(speed);
 
-        m_MouseLook.UpdateCursorLock();
+        //m_MouseLook.UpdateCursorLock();
 
         //搜索垃圾
         GarbageBase garbage;
@@ -204,6 +216,8 @@ public class JSFPSController : MonoBehaviour
                     tmp = garbage.OnCleaned;
                     tmp += () =>
                     {
+                        JSGameManager.Instance.GarbageCountLeft--;
+                        print(JSGameManager.Instance.GarbageCountLeft);
                         InventoryManager.Instance.UseTool();
                         PackageManager.Instance.OnPackageUse(garbage.pacCapcityCost);
                         EventDispatcher.Outer.DispatchEvent(EventConst.EVENT_OnPickedUp);
@@ -275,6 +289,10 @@ public class JSFPSController : MonoBehaviour
             case 1002:
             case 1003:
             case 1004:
+                m_HandRenderes[0].sharedMesh = leftMesh;
+                m_HandRenderes[1].sharedMesh = rightMesh;
+                m_HandRenderes[0].material = defaultMaterial;
+                m_HandRenderes[1].material = defaultMaterial;
                 currentTool = Instantiate(ResourceLoader.Instance.Load<GameObject>(toolIns.prefabPath));
                 currentTool.transform.SetParent(m_ToolGrabPoint);
                 currentTool.transform.localPosition = toolIns.posOffset;

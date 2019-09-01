@@ -44,6 +44,7 @@ public class UIScreenHUD : UIScreen
 
     protected override void InitView()
     {
+        base.InitView();
         UIUtilities.DoFadeUI(pickupSlider.gameObject, 0, 0f, Ease.InOutBack);
         CapacitySlider.maxValue = PackageManager.Instance.maxCapacity;
         garbageNotice.SetActive(false);
@@ -60,6 +61,7 @@ public class UIScreenHUD : UIScreen
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnToolUse, OnToolUse);
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnPickedUp, CancelLockTarget);
         EventDispatcher.Outer.RemoveListener(EventConst.EVENT_OnCapacityChanges, OnPackgaeCapacityChange);
+        this.gameObject.SetActive(false);
     }
 
 
@@ -67,7 +69,7 @@ public class UIScreenHUD : UIScreen
     {
         float timeLeft = (float) data[0];
         int t = (int) timeLeft;
-        txt_TimeLeft.text = (t / 60).ToString() + ":" + (t % 60).ToString();
+        txt_TimeLeft.text = (t / 60).ToString("00") + ":" + (t % 60).ToString("00");
         txt_TimeLeft.color = Color.Lerp(Color.red, Color.green, timeLeft / totalTime);
     }
 

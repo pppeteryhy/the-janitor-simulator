@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 222126234011868870}
   - component: {fileID: 114799140947938372}
   - component: {fileID: 114235990772071630}
+  - component: {fileID: 114198941563483966}
   m_Layer: 5
   m_Name: Button_Start
   m_TagString: Untagged
@@ -128,6 +129,7 @@ GameObject:
   - component: {fileID: 222357959256168832}
   - component: {fileID: 114065060702792188}
   - component: {fileID: 114070246520940524}
+  - component: {fileID: 114647316997198426}
   m_Layer: 5
   m_Name: Button_Left
   m_TagString: Untagged
@@ -236,6 +238,7 @@ GameObject:
   - component: {fileID: 222335507893428480}
   - component: {fileID: 114076043935960166}
   - component: {fileID: 114715998794760746}
+  - component: {fileID: 114206444527303698}
   m_Layer: 5
   m_Name: Button_Back
   m_TagString: Untagged
@@ -355,6 +358,7 @@ GameObject:
   - component: {fileID: 222322392261804606}
   - component: {fileID: 114315021861533394}
   - component: {fileID: 114611485760663544}
+  - component: {fileID: 114206897022426026}
   m_Layer: 5
   m_Name: Button_Right
   m_TagString: Untagged
@@ -677,6 +681,45 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Time Limit: 300s'
+--- !u!114 &114198941563483966
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1270020374493664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965575f73d533cb41a336ce2d0cfbab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: 5193feacea8f3f849a1f1e32dca2e95a, type: 3}
+--- !u!114 &114206444527303698
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1680963980315296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965575f73d533cb41a336ce2d0cfbab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: 5193feacea8f3f849a1f1e32dca2e95a, type: 3}
+--- !u!114 &114206897022426026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1947499051757218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965575f73d533cb41a336ce2d0cfbab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: 5193feacea8f3f849a1f1e32dca2e95a, type: 3}
 --- !u!114 &114235990772071630
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -810,15 +853,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.43529412}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: d01488a77b688c4469e91c2feadcf7cb, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1000,6 +1043,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowMaskGraphic: 1
+--- !u!114 &114647316997198426
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1316938838056460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 965575f73d533cb41a336ce2d0cfbab2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSound: {fileID: 0}
+  clickSound: {fileID: 8300000, guid: 5193feacea8f3f849a1f1e32dca2e95a, type: 3}
 --- !u!114 &114710212361081618
 MonoBehaviour:
   m_ObjectHideFlags: 1

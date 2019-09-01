@@ -27,6 +27,15 @@ public class UIScreenMainMenu : UIScreen
         Cursor.visible = true;
     }
 
+    public override void OnClose()
+    {
+        base.OnClose();
+        btn_LevelSelection.onClick.RemoveAllListeners();
+        btn_Options.onClick.RemoveAllListeners();
+        btn_Credits.onClick.RemoveAllListeners();
+        btn_Quit.onClick.RemoveAllListeners();
+    }
+
     private void OnLevelSelectionButtonClicked()
     {
         UIManager.Instance.Push<UIScreenLevelSelection>(UIDepthConst.MiddleDepth, true);
